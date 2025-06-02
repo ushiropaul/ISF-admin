@@ -1,0 +1,17 @@
+.navbar {
+  background-color: #003366;
+  padding: 1rem;
+  display: flex;
+  gap: 1.5rem;
+  color: white;
+}
+
+.navbar a,
+.navbar button {
+  color: white;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
