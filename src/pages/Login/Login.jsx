@@ -31,7 +31,7 @@ export default function Login() {
       return;
     }
 
-    navigate('/admin/Dashboard.jsx');
+    navigate('/admin/');
   };
 
   return (
