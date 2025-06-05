@@ -4,6 +4,7 @@ import Login from './pages/Login/Login';
 import Dashboard from './pages/Admin/Dashboard';
 import PanelPadres from './pages/Padres/Panel';
 import Navbar from './components/Navbar/Navbar.jsx';
+import Alumnos  from './pages/Admin/Alumnos.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -11,16 +12,25 @@ function App() {
     <BrowserRouter>
     <Navbar />
       <Routes>
+
+        {/* de inicio */}
         <Route path="/" element={<Home />} /> 
         <Route path="/login" element={<Login />} />
+
+        {/* prohibido , mas tarde poner protected routes*/}
         <Route
-          path="/dashboard"
+          path="/admin"
           element={
-            <ProtectedRoute>
+          
               <Dashboard />
-            </ProtectedRoute>
+            
           }
         />
+        
+        <Route path='/admin/alumnos' element={ <Alumnos/> }/>
+
+
+        {/* publico */}
         <Route path="/panel" element={<PanelPadres />} />
       </Routes>
     </BrowserRouter>
