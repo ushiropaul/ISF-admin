@@ -39,7 +39,7 @@ export default function Navbar() {
       <Link to="/">Inicio</Link>
       {!user && <Link to="/login">inicia como admin</Link>}
       {!user && <Link to="/panel">Panel</Link>}
-      {user && rol === 'admin' && <Link to="/admin/dashboard">Dashboard</Link>}
+      {user && rol === 'admin' && <Link to="/admin/">Admin</Link>}
       {user && <button onClick={handleLogout}>Cerrar sesión</button>}
     </nav>
   );
