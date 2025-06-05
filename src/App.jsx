@@ -21,13 +21,17 @@ function App() {
         <Route
           path="/admin"
           element={
-          
-              <Dashboard />
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
             
           }
         />
-        
-        <Route path='/admin/alumnos' element={ <Alumnos/> }/>
+        <Route path='/admin/alumnos' element={ 
+          <ProtectedRoute>
+            <Alumnos/>
+          </ProtectedRoute> 
+      }/>
 
 
         {/* publico */}
