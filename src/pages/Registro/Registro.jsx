@@ -47,7 +47,7 @@ export default function Registro() {
     });
 
     setTimeout(() => {
-      navigate('/login');
+      navigate('/panel');
     }, 2000);
   };
 
