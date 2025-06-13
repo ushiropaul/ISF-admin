@@ -12,6 +12,7 @@ export default function Registro() {
   });
   const [mensaje, setMensaje] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
