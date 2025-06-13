@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from './../../supabaseClient.js';
+import { useNavigate } from 'react-router-dom'
 
 export default function Registro() {
   const [form, setForm] = useState({
@@ -62,6 +63,8 @@ export default function Registro() {
       email: '',
       password: ''
     });
+
+        navigate('/registro/');
   };
 
   return (
