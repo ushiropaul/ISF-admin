@@ -5,6 +5,7 @@ import Dashboard from './pages/Admin/Dashboard';
 import PanelPadres from './pages/Padres/Panel';
 import Navbar from './components/Navbar/Navbar.jsx';
 import Alumnos  from './pages/Admin/Alumnos.jsx';
+import Registro from './pages/Registro/Registro.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         {/* de inicio */}
         <Route path="/" element={<Home />} /> 
         <Route path="/login" element={<Login />} />
+        <Route path='/registro' element={ <Registro/>}  />
 
         {/* prohibido , mas tarde poner protected routes*/}
         <Route
