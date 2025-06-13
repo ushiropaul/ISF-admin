@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { supabase } from './../../supabaseClient.js';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 export default function Registro() {
   const [form, setForm] = useState({
@@ -24,6 +24,7 @@ export default function Registro() {
     setError('');
     setMensaje('');
 
+    // Sign up del usuario
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
       email: form.email,
       password: form.password
@@ -34,27 +35,7 @@ export default function Registro() {
       return;
     }
 
-    const userId = signUpData.user?.id;
-    if (!userId) {
-      setError('No se pudo obtener ID del usuario.');
-      return;
-    }
-
-    const { error: insertError } = await supabase.from('usuarios').insert([
-      {
-        id: userId,
-        email: form.email,
-        rol: 'padre',
-        nombre: form.nombre,
-        apellido: form.apellido,
-        num_cel: form.num_cel
-      }
-    ]);
-
-    if (insertError) {
-      setError('Error al guardar datos personales: ' + insertError.message);
-      return;
-    }
+    // No se hace INSERT manual (el trigger lo maneja)
 
     setMensaje('Registro exitoso. Revisa tu email para confirmar la cuenta.');
     setForm({
@@ -65,7 +46,9 @@ export default function Registro() {
       password: ''
     });
 
-        navigate('/registro/');
+    setTimeout(() => {
+      navigate('/login');
+    }, 2000);
   };
 
   return (
@@ -74,11 +57,45 @@ export default function Registro() {
       {mensaje && <p style={{ color: 'green' }}>{mensaje}</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <input type="text" name="nombre" placeholder="Nombre" value={form.nombre} onChange={handleChange} required />
-        <input type="text" name="apellido" placeholder="Apellido" value={form.apellido} onChange={handleChange} required />
-        <input type="text" name="num_cel" placeholder="Número de celular" value={form.num_cel} onChange={handleChange} />
-        <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Contraseña" value={form.password} onChange={handleChange} required />
+        <input
+          type="text"
+          name="nombre"
+          placeholder="Nombre"
+          value={form.nombre}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="apellido"
+          placeholder="Apellido"
+          value={form.apellido}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="num_cel"
+          placeholder="Número de celular"
+          value={form.num_cel}
+          onChange={handleChange}
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
         <button type="submit">Registrarse</button>
       </form>
     </div>
