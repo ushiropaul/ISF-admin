@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar.jsx';
 import Alumnos  from './pages/Admin/Alumnos.jsx';
 import Registro from './pages/Registro/Registro.jsx';
 import ResetPassword from './pages/ResetPassword/ResetPassword.jsx';
+import UserAdministrator from './pages/UserAdministrator/UserAdministrator.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -31,6 +32,17 @@ function App() {
             
           }
         />
+
+        <Route
+          path="/administrar-usuarios"
+          element={
+              <ProtectedRoute>
+                <UserAdministrator />
+              </ProtectedRoute>
+            
+          }
+        />
+
         <Route path='/admin/alumnos' element={ 
           <ProtectedRoute>
             <Alumnos/>

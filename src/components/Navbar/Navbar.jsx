@@ -42,7 +42,7 @@ export default function Navbar() {
       {!user && <Link to="/registro">Registrarse</Link>}
       {user && rol === 'admin' && <Link to="/admin/">Admin</Link>}
       {user && rol === 'admin' && <Link to="/panel/">Panel de padres</Link>}
-      {user && <button onClick={handleLogout}>Cerrar sesión</button>}
+      {user && <button onClick={handleLogout}>Cerrar sesión</button>}  {/*<---- mas tarde, cambiar la funcion de cerrar sesion a otra pagina, con mas filtros y seguridad*/}
     </nav>
   );
 }
