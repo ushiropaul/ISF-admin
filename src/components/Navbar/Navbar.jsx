@@ -38,7 +38,7 @@ export default function Navbar() {
     <nav className="navbar">
       <Link to="/">Inicio</Link>
       {!user && <Link to="/login">inicia como admin</Link>}
-      {user && <Link to="/panel">Panel</Link>}
+      {user && rol === 'padre' && <Link to="/panel">Panel</Link>}
       {!user && <Link to="/registro">Registrarse</Link>}
       {user && rol === 'admin' && <Link to="/admin/">Admin</Link>}
       {user && <button onClick={handleLogout}>Cerrar sesión</button>}
