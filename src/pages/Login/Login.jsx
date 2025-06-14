@@ -21,7 +21,7 @@ export default function Login() {
     if (signInError) return setError('Email o contraseña incorrectos');
 
     const { data: usuario, error: rolError } = await supabase
-      .from('usuarios')
+      .from('admins')
       .select('rol')
       .eq('id', signInData.user.id)
       .single();
