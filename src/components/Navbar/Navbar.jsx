@@ -41,7 +41,7 @@ export default function Navbar() {
       {user && rol === 'padre' && <Link to="/panel">Panel de padres</Link>}
       {!user && <Link to="/registro">Registrarse</Link>}
       {user && rol === 'admin' && <Link to="/admin/">Admin</Link>}
-      {user && rol === 'admin' && <Link to="/admin/">Panel de padres</Link>}
+      {user && rol === 'admin' && <Link to="/panel/">Panel de padres</Link>}
       {user && <button onClick={handleLogout}>Cerrar sesión</button>}
     </nav>
   );
