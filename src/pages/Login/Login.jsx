@@ -22,42 +22,23 @@ export default function Login() {
 
     const user = signInData.user;
 
-    // Verificar si es admin por email
-    const { data: admin, error: adminError } = await supabase
-      .from('admins')
-      .select('rol')
-      .eq('email', user.email)
-      .single();
-
-    if (admin && admin.rol === 'admin' && !adminError) {
-      return navigate('/admin/');
-    }
-
-
-    // No es admin, verificar si ya tiene fila en usuarios
-    const { data: usuario, error: usuarioError } = await supabase
+    const { data: perfil, error: perfilError } = await supabase
       .from('usuarios')
-      .select('id')
+      .select('rol')
       .eq('id', user.id)
       .single();
 
-    if (usuarioError || !usuario) {
-      // No tiene fila, crearla
-      const { error: insertError } = await supabase.from('usuarios').insert([
-        {
-          id: user.id,
-          email: user.email,
-          rol: 'padre'
-        }
-      ]);
-
-      if (insertError) {
-        return setError('Error al crear perfil de usuario: ' + insertError.message);
-      }
+    if (perfilError || !perfil) {
+      return setError('No se pudo obtener el perfil del usuario');
     }
 
-    // Redirigir a panel de usuario
+    // Redirigir según el rol
+    if (perfil.rol === 'admin') {
+      return navigate('/admin/');
+    }
+
     navigate('/panel/');
+
   };
 
   return (
