@@ -33,12 +33,14 @@ export default function Login() {
       return setError('No se pudo obtener el perfil del usuario');
     }
 
+
     // Redirigir según el rol
-    if (perfil.rol === 'admin', "preceptor", "profesor") {
+    if (['admin', 'profesor', 'preceptor', 'secretario'].includes(perfil.rol)) {
       return navigate('/admin/');
     }
 
     navigate('/panel/');
+
 
   };
 
