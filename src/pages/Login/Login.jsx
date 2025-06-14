@@ -6,6 +6,7 @@ import './Login.css';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -70,13 +71,22 @@ export default function Login() {
         placeholder="Email"
         required
       />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Contraseña"
-        required
-      />
+      <div className="password-container">
+        <input
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Contraseña"
+          required
+        />
+        <button
+          type="button"
+          className="toggle-password"
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          {showPassword ? '🙈' : '👁️'}
+        </button>
+      </div>
       <button type="submit">Ingresar</button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <p style={{ marginTop: '1rem' }}>
