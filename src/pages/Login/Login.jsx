@@ -34,7 +34,7 @@ export default function Login() {
     }
 
     // Redirigir según el rol
-    if (perfil.rol === 'admin') {
+    if (perfil.rol === 'admin', "preceptor", "profesor") {
       return navigate('/admin/');
     }
 
