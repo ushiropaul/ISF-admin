@@ -22,17 +22,17 @@ export default function Login() {
 
     const user = signInData.user;
 
-    // Verificar si es admin
+    // Verificar si es admin por email
     const { data: admin, error: adminError } = await supabase
       .from('admins')
-      .select('id')
-      .eq('id', user.id)
+      .select('rol')
+      .eq('email', user.email)
       .single();
 
-    if (admin && !adminError) {
-      // Es admin
+    if (admin && admin.rol === 'admin' && !adminError) {
       return navigate('/admin/');
     }
+
 
     // No es admin, verificar si ya tiene fila en usuarios
     const { data: usuario, error: usuarioError } = await supabase
