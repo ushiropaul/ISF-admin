@@ -6,6 +6,7 @@ import PanelPadres from './pages/Padres/Panel';
 import Navbar from './components/Navbar/Navbar.jsx';
 import Alumnos  from './pages/Admin/Alumnos.jsx';
 import Registro from './pages/Registro/Registro.jsx';
+import ResetPassword from './pages/ResetPassword/ResetPassword.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -18,8 +19,9 @@ function App() {
         <Route path="/" element={<Home />} /> 
         <Route path="/login" element={<Login />} />
         <Route path='/registro' element={ <Registro/>}  />
+        <Route path='/recuperar-contraseña/' element={ <ResetPassword/> } />
 
-        {/* prohibido , mas tarde poner protected routes*/}
+        {/* prohibido*/}
         <Route
           path="/admin"
           element={
@@ -34,6 +36,8 @@ function App() {
             <Alumnos/>
           </ProtectedRoute> 
       }/>
+
+
 
 
         {/* publico */}
