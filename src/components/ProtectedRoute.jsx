@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { supabase } from './../supabaseClient';
 
-export default function ProtectedRoute({ children }) {
+export default function ProtectedRoute({ children, rolesPermitidos = ['admin'] }) {
   const [allowed, setAllowed] = useState(null);
 
   useEffect(() => {
@@ -16,11 +16,12 @@ export default function ProtectedRoute({ children }) {
         .eq('id', authData.user.id)
         .single();
 
-      setAllowed(usuario?.rol === 'admin');
+      // Verificamos si su rol está dentro de los permitidos
+      setAllowed(usuario && rolesPermitidos.includes(usuario.rol));
     };
 
     checkAccess();
-  }, []);
+  }, [rolesPermitidos]);
 
   if (allowed === null) return <p>Cargando...</p>;
   if (!allowed) return <Navigate to="/login" />;

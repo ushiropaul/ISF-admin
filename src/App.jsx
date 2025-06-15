@@ -24,19 +24,18 @@ function App() {
 
         {/* prohibido*/}
         <Route
-          path="/admin"
-          element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            
-          }
-        />
+        path="/admin"
+        element={
+          <ProtectedRoute rolesPermitidos={['admin', 'preceptor', 'secretario', 'profesor']}>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
 
         <Route
           path="/administrar-usuarios"
           element={
-              <ProtectedRoute>
+              <ProtectedRoute rolesPermitidos={['admin']}>
                 <UserAdministrator />
               </ProtectedRoute>
             
@@ -44,7 +43,7 @@ function App() {
         />
 
         <Route path='/admin/alumnos' element={ 
-          <ProtectedRoute>
+          <ProtectedRoute rolesPermitidos={['admin', 'preceptor', 'secretario']}>
             <Alumnos/>
           </ProtectedRoute> 
       }/>
