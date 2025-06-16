@@ -3,7 +3,7 @@ import { supabase } from './../../supabaseClient.js';
 
 export default function Panel() {
   const [usuarioId, setUsuarioId] = useState(null);
-  const [relaciones, setRelaciones] = useState([]); // Hijos vinculados
+  const [relaciones, setRelaciones] = useState([]);
   const [form, setForm] = useState({
     nombre: '',
     apellido: '',
@@ -25,27 +25,45 @@ export default function Panel() {
   }, []);
 
   const cargarRelaciones = async (idUsuario) => {
-    const { data: relaciones } = await supabase
+    const { data: relaciones, error } = await supabase
       .from('alumno_padre')
       .select(`
         id,
-        alumnos (*),
-        alumnos:notas (
-          id, calificacion, fecha, cuatrimestre,
-          curso_materia (
+        alumno_id,
+        usuario_id,
+        alumnos (
+          id,
+          nombre,
+          apellido,
+          curso_id,
+          notas (
             id,
-            materia (
-              id, nombre
+            calificacion,
+            fecha,
+            cuatrimestre,
+            curso_materia (
+              id,
+              materia (
+                nombre
+              )
             )
+          ),
+          asistencias (
+            id,
+            fecha,
+            hora,
+            tipo
           )
-        ),
-        alumnos:asistencias (
-          id, fecha, hora, tipo
         )
       `)
       .eq('usuario_id', idUsuario);
 
-    setRelaciones(relaciones || []);
+    if (error) {
+      console.error('Error al cargar relaciones:', error.message);
+    } else {
+      console.log('Relaciones cargadas:', relaciones);
+      setRelaciones(relaciones || []);
+    }
   };
 
   const handleChange = (e) => {
