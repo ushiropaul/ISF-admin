@@ -36,7 +36,7 @@ export default function Panel() {
           nombre,
           apellido,
           curso_id,
-          notas (
+          notas_curso_materia_id_fkey (
             id,
             calificacion,
             fecha,
