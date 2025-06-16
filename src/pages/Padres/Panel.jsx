@@ -24,48 +24,77 @@ export default function Panel() {
     obtenerDatos();
   }, []);
 
-const cargarRelaciones = async (idUsuario) => {
-  const { data: relaciones, error } = await supabase
-    .from('alumno_padre')
-    .select(`
-      id,
-      alumno_id,
-      usuario_id,
-      alumnos (
-        id,
-        nombre,
-        apellido,
-        curso_id,
-        notas!notas_alumno_id_fkey (
-          id,
-          calificacion,
-          fecha,
-          cuatrimestre,
-          curso_materia!notas_curso_materia_id_fkey (
-            id,
-            materias (
-              nombre
-            )
-          )
-        ),
-        asistencias (
-          id,
-          fecha,
-          hora,
-          tipo
-        )
-      )
-    `)
-    .eq('usuario_id', idUsuario);
+  function procesarNotas(notas) {
+    const ordenadas = [...notas].sort((a, b) => {
+      const matA = a.curso_materia.materias.nombre;
+      const matB = b.curso_materia.materias.nombre;
+      if (matA !== matB) return matA.localeCompare(matB);
+      if (a.cuatrimestre !== b.cuatrimestre) return a.cuatrimestre - b.cuatrimestre;
+      return new Date(a.fecha) - new Date(b.fecha);
+    });
 
-  if (error) {
-    console.error('Error al cargar relaciones:', error.message);
-  } else {
-    setRelaciones(relaciones || []);
+    const cuatri = {};
+    ordenadas.forEach(n => {
+      const clave = `${n.cuatrimestre}-${n.fecha.slice(0, 4)}`;
+      if (!cuatri[clave]) cuatri[clave] = [];
+      cuatri[clave].push(n.calificacion);
+    });
+
+    const promediosCuat = Object.entries(cuatri).map(([clave, arr]) => ({
+      cuatrimestre: clave.split('-')[0],
+      año: clave.split('-')[1],
+      promedio: (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2)
+    }));
+
+    const promedioGeneral = (ordenadas.reduce((a, n) => a + parseFloat(n.calificacion), 0) / ordenadas.length).toFixed(2);
+
+    return { ordenadas, promediosCuat, promedioGeneral };
   }
-};
 
+  const cargarRelaciones = async (idUsuario) => {
+    const { data: relaciones, error } = await supabase
+      .from('alumno_padre')
+      .select(`
+        id,
+        alumno_id,
+        usuario_id,
+        alumnos (
+          nombre,
+          apellido,
+          documento,
+          fecha_nacimiento,
+          grupo_sanguineo,
+          nacionalidad,
+          edad,
+          num_cel,
+          localidad,
+          domicilio,
+          cursos (nombre),
+          notas!notas_alumno_id_fkey (
+            id,
+            calificacion,
+            fecha,
+            cuatrimestre,
+            curso_materia!notas_curso_materia_id_fkey (
+              materias (nombre)
+            )
+          ),
+          asistencias (
+            id,
+            fecha,
+            hora,
+            tipo
+          )
+        )
+      `)
+      .eq('usuario_id', idUsuario);
 
+    if (error) {
+      console.error('Error al cargar relaciones:', error.message);
+    } else {
+      setRelaciones(relaciones || []);
+    }
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -142,34 +171,48 @@ const cargarRelaciones = async (idUsuario) => {
           <div key={rel.id} style={{ border: '1px solid #ccc', padding: '1rem', marginBottom: '1rem' }}>
             <h4>Datos del alumno:</h4>
             <ul>
-              {Object.entries(rel.alumnos).map(([key, value]) => (
-                key !== 'notas' && key !== 'asistencias' && (
-                  <li key={key}><strong>{key.replace(/_/g, ' ')}:</strong> {String(value)}</li>
-                )
+              {['nombre', 'apellido', 'documento', 'fecha_nacimiento', 'grupo_sanguineo', 'nacionalidad', 'edad', 'num_cel', 'localidad', 'domicilio']
+                .map(k => (
+                  <li key={k}><strong>{k.replace(/_/g, ' ')}:</strong> {rel.alumnos[k]}</li>
               ))}
+              <li><strong>Curso:</strong> {rel.alumnos.cursos?.nombre || 'Sin curso asignado'}</li>
             </ul>
 
             <h4>Notas:</h4>
-            {rel.alumnos.notas && rel.alumnos.notas.length > 0 ? (
-              <ul>
-                {rel.alumnos.notas.map((nota) => (
-                  <li key={nota.id}>
-                    {nota.curso_materia?.materias?.nombre || 'Sin materia'} - {nota.calificacion} - Cuatrimestre {nota.cuatrimestre} - {nota.fecha}
-                  </li>
-                ))}
-              </ul>
-            ) : <p>Sin notas registradas.</p>}
+            {rel.alumnos.notas && rel.alumnos.notas.length > 0 ? (() => {
+              const { ordenadas, promediosCuat, promedioGeneral } = procesarNotas(rel.alumnos.notas);
+              return (
+                <>
+                  <ul>
+                    {ordenadas.map(nota => (
+                      <li key={nota.id}>
+                        {nota.curso_materia?.materias?.nombre || 'Sin materia'} — Cuatrimestre {nota.cuatrimestre}, {nota.fecha}: {nota.calificacion}
+                      </li>
+                    ))}
+                  </ul>
+                  <p><strong>Promedios por cuatrimestre:</strong></p>
+                  <ul>
+                    {promediosCuat.map(p => (
+                      <li key={p.cuatrimestre + '-' + p.año}>
+                        Cuatrimestre {p.cuatrimestre} {p.año}: {p.promedio}
+                      </li>
+                    ))}
+                  </ul>
+                  <p><strong>Promedio general:</strong> {promedioGeneral}</p>
+                </>
+              );
+            })() : <p>Sin notas registradas.</p>}
 
-            <h4>Asistencias:</h4>
+            <h4>Faltas y llegadas tarde:</h4>
             {rel.alumnos.asistencias && rel.alumnos.asistencias.length > 0 ? (
               <ul>
-                {rel.alumnos.asistencias.map((asis) => (
+                {rel.alumnos.asistencias.map(asis => (
                   <li key={asis.id}>
-                    {asis.tipo} - {asis.fecha} - {asis.hora}
+                    {asis.tipo.replace('_', ' ')} — {asis.fecha} a las {asis.hora}
                   </li>
                 ))}
               </ul>
-            ) : <p>Sin asistencias registradas.</p>}
+            ) : <p>Sin faltas ni llegadas tarde registradas.</p>}
 
             <button onClick={() => desvincular(rel.id)} style={{ marginTop: '1rem' }}>Desvincular</button>
           </div>
