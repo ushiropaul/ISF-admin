@@ -24,46 +24,47 @@ export default function Panel() {
     obtenerDatos();
   }, []);
 
-  const cargarRelaciones = async (idUsuario) => {
-    const { data: relaciones, error } = await supabase
-      .from('alumno_padre')
-      .select(`
+const cargarRelaciones = async (idUsuario) => {
+  const { data: relaciones, error } = await supabase
+    .from('alumno_padre')
+    .select(`
+      id,
+      alumno_id,
+      usuario_id,
+      alumnos (
         id,
-        alumno_id,
-        usuario_id,
-        alumnos (
+        nombre,
+        apellido,
+        curso_id,
+        notas!notas_alumno_id_fkey (
           id,
-          nombre,
-          apellido,
-          curso_id,
-          notas_curso_materia_id_fkey (
+          calificacion,
+          fecha,
+          cuatrimestre,
+          curso_materia!fk_curso_materia_materia (
             id,
-            calificacion,
-            fecha,
-            cuatrimestre,
-            curso_materia!fk_curso_materia_materia (
-              id,
-              materias (
-                nombre
-              )
+            materias (
+              nombre
             )
-          ),
-          asistencias (
-            id,
-            fecha,
-            hora,
-            tipo
           )
+        ),
+        asistencias (
+          id,
+          fecha,
+          hora,
+          tipo
         )
-      `)
-      .eq('usuario_id', idUsuario);
+      )
+    `)
+    .eq('usuario_id', idUsuario);
 
-    if (error) {
-      console.error('Error al cargar relaciones:', error.message);
-    } else {
-      setRelaciones(relaciones || []);
-    }
-  };
+  if (error) {
+    console.error('Error al cargar relaciones:', error.message);
+  } else {
+    setRelaciones(relaciones || []);
+  }
+};
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
