@@ -41,7 +41,7 @@ export default function Panel() {
             calificacion,
             fecha,
             cuatrimestre,
-            curso_materia (
+            curso_materia!fk_curso_materia_materia (
               id,
               materias (
                 nombre
@@ -61,7 +61,6 @@ export default function Panel() {
     if (error) {
       console.error('Error al cargar relaciones:', error.message);
     } else {
-      console.log('Relaciones cargadas:', relaciones);
       setRelaciones(relaciones || []);
     }
   };
@@ -153,7 +152,7 @@ export default function Panel() {
               <ul>
                 {rel.alumnos.notas.map((nota) => (
                   <li key={nota.id}>
-                    {nota.curso_materia?.materia?.nombre || 'Sin materia'} - {nota.calificacion} - Cuatrimestre {nota.cuatrimestre} - {nota.fecha}
+                    {nota.curso_materia?.materias?.nombre || 'Sin materia'} - {nota.calificacion} - Cuatrimestre {nota.cuatrimestre} - {nota.fecha}
                   </li>
                 ))}
               </ul>
