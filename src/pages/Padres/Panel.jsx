@@ -41,7 +41,7 @@ const cargarRelaciones = async (idUsuario) => {
           calificacion,
           fecha,
           cuatrimestre,
-          curso_materia!fk_curso_materia_materia (
+          curso_materia!notas_curso_materia_id_fkey (
             id,
             materias (
               nombre
@@ -64,6 +64,7 @@ const cargarRelaciones = async (idUsuario) => {
     setRelaciones(relaciones || []);
   }
 };
+
 
 
   const handleChange = (e) => {
