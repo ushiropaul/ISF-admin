@@ -43,7 +43,7 @@ export default function Panel() {
             cuatrimestre,
             curso_materia (
               id,
-              materia (
+              materias (
                 nombre
               )
             )
