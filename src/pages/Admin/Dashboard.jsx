@@ -57,8 +57,8 @@ export default function Dashboard() {
       roles: ['admin', 'profesor', 'preceptor'],
     },
     {
-      to: '/admin/asistencias',
-      label: '📅 Asistencias',
+      to: '/admin/faltas',
+      label: '📅 Faltas',
       roles: ['admin', 'preceptor'],
     },
     {
