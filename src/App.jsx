@@ -8,6 +8,8 @@ import Alumnos  from './pages/Admin/Alumnos.jsx';
 import Registro from './pages/Registro/Registro.jsx';
 import ResetPassword from './pages/ResetPassword/ResetPassword.jsx';
 import UserAdministrator from './pages/UserAdministrator/UserAdministrator.jsx';
+import Nota from './pages/Admin/Notas.jsx';
+import Faltas from './pages/Admin/Faltas.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -26,11 +28,29 @@ function App() {
         <Route
         path="/admin"
         element={
-          <ProtectedRoute rolesPermitidos={['admin', 'preceptor', 'secretario', 'profesor']}>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
+            <ProtectedRoute rolesPermitidos={['admin', 'preceptor', 'secretario', 'profesor']}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+        path="/admin/notas"
+        element={
+            <ProtectedRoute rolesPermitidos={['admin', 'preceptor', 'secretario', 'profesor']}>
+              <Nota />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+        path="/admin/faltas"
+        element={
+            <ProtectedRoute rolesPermitidos={['admin', 'preceptor', 'secretario', 'profesor']}>
+              <Faltas />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/administrar-usuarios"
