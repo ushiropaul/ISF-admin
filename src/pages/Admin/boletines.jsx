@@ -1,5 +1,3 @@
-
-
 // src/pages/boletines.jsx
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabaseClient.js";
@@ -9,7 +7,6 @@ import { Document, Packer, Paragraph, TextRun } from "docx";
 export default function Boletines() {
   const [notas, setNotas] = useState([]);
   const [faltas, setFaltas] = useState([]);
-  const [materias, setMaterias] = useState([]);
   const [alumnos, setAlumnos] = useState([]);
 
   useEffect(() => {
@@ -32,9 +29,23 @@ export default function Boletines() {
   }, []);
 
   const fetchData = async () => {
-    const { data: notasData } = await supabase.from("notas").select("*");
+    const { data: notasData } = await supabase
+      .from("notas")
+      .select(`
+        id,
+        alumno_id,
+        calificacion,
+        fecha,
+        cuatrimestre,
+        curso_materia:curso_materia_id (
+          materia:materia_id (
+            id,
+            nombre
+          )
+        )
+      `);
+
     const { data: faltasData } = await supabase.from("asistencias").select("*");
-    const { data: materiasData } = await supabase.from("materias").select("*");
 
     const { data: alumnosData } = await supabase
       .from("alumnos")
@@ -43,20 +54,13 @@ export default function Boletines() {
         nombre,
         apellido,
         documento,
-        fecha_nacimiento,
-        grupo_sanguineo,
-        nacionalidad,
         edad,
-        num_cel,
-        localidad,
-        domicilio,
         curso_id,
         cursos(nombre)
       `);
 
     setNotas(notasData || []);
     setFaltas(faltasData || []);
-    setMaterias(materiasData || []);
     setAlumnos(alumnosData || []);
   };
 
@@ -68,40 +72,33 @@ export default function Boletines() {
     const porCuatrimestre = {};
     const porAnio = {};
 
-    materias.forEach((m) => {
-      const notasMateria = notasAlumno.filter((n) => n.materia_id === m.id);
-      if (notasMateria.length) {
-        const promedio = notasMateria.reduce((acc, n) => acc + Number(n.nota || 0), 0) / notasMateria.length;
-        porMateria[m.nombre] = promedio.toFixed(2);
+    notasAlumno.forEach((n) => {
+      const materia = n.curso_materia?.materia?.nombre || "Sin materia";
 
-        // Promedio por cuatrimestre
-        notasMateria.forEach((n) => {
-          const clave = `${m.nombre} - C${n.cuatrimestre}`;
-          if (!porCuatrimestre[clave]) porCuatrimestre[clave] = [];
-          porCuatrimestre[clave].push(Number(n.nota || 0));
-        });
+      if (!porMateria[materia]) porMateria[materia] = [];
+      porMateria[materia].push(Number(n.calificacion || 0));
 
-        // Promedio por año
-        notasMateria.forEach((n) => {
-          const clave = `${m.nombre} - ${n.anio}`;
-          if (!porAnio[clave]) porAnio[clave] = [];
-          porAnio[clave].push(Number(n.nota || 0));
-        });
-      }
+      const claveCuatr = `${materia} - C${n.cuatrimestre}`;
+      if (!porCuatrimestre[claveCuatr]) porCuatrimestre[claveCuatr] = [];
+      porCuatrimestre[claveCuatr].push(Number(n.calificacion || 0));
+
+      const anio = new Date(n.fecha).getFullYear();
+      const claveAnio = `${materia} - ${anio}`;
+      if (!porAnio[claveAnio]) porAnio[claveAnio] = [];
+      porAnio[claveAnio].push(Number(n.calificacion || 0));
     });
 
-    // Calcular promedios finales por cuatrimestre y año
-    for (const key in porCuatrimestre) {
-      const arr = porCuatrimestre[key];
-      porCuatrimestre[key] = (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2);
-    }
-    for (const key in porAnio) {
-      const arr = porAnio[key];
-      porAnio[key] = (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2);
-    }
+    for (const key in porMateria)
+      porMateria[key] = (porMateria[key].reduce((a, b) => a + b, 0) / porMateria[key].length).toFixed(2);
+
+    for (const key in porCuatrimestre)
+      porCuatrimestre[key] = (porCuatrimestre[key].reduce((a, b) => a + b, 0) / porCuatrimestre[key].length).toFixed(2);
+
+    for (const key in porAnio)
+      porAnio[key] = (porAnio[key].reduce((a, b) => a + b, 0) / porAnio[key].length).toFixed(2);
 
     const promedioGeneral = (
-      notasAlumno.reduce((acc, n) => acc + Number(n.nota || 0), 0) / notasAlumno.length
+      notasAlumno.reduce((acc, n) => acc + Number(n.calificacion || 0), 0) / notasAlumno.length
     ).toFixed(2);
 
     return { porMateria, general: promedioGeneral, porCuatrimestre, porAnio };
@@ -184,25 +181,51 @@ export default function Boletines() {
             const tardesAlumno = faltas.filter((f) => f.alumno_id === alumno.id && f.tipo === "llegada_tarde").length;
 
             return (
-              <tr key={alumno.id}>
-                <td>{alumno.nombre}</td>
-                <td>{alumno.apellido}</td>
-                <td>{alumno.documento}</td>
-                <td>{alumno.edad}</td>
-                <td>{alumno.cursos?.nombre || "Sin curso"}</td>
-                <td>{promedios.general}</td>
-                <td>{faltasAlumno}</td>
-                <td>{tardesAlumno}</td>
-                <td>
-                  <button onClick={() => generarPDF(alumno)}>PDF</button>{" "}
-                  <button onClick={() => generarWord(alumno)}>Word</button>
-                </td>
-              </tr>
+              <React.Fragment key={alumno.id}>
+                <tr>
+                  <td>{alumno.nombre}</td>
+                  <td>{alumno.apellido}</td>
+                  <td>{alumno.documento}</td>
+                  <td>{alumno.edad}</td>
+                  <td>{alumno.cursos?.nombre || "Sin curso"}</td>
+                  <td>{promedios.general}</td>
+                  <td>{faltasAlumno}</td>
+                  <td>{tardesAlumno}</td>
+                  <td>
+                    <button onClick={() => generarPDF(alumno)}>PDF</button>{" "}
+                    <button onClick={() => generarWord(alumno)}>Word</button>
+                  </td>
+                </tr>
+
+                {/* Tabla adicional: Promedios detallados */}
+                <tr>
+                  <td colSpan="9">
+                    <strong>Promedios por materia:</strong>
+                    <ul>
+                      {Object.entries(promedios.porMateria).map(([materia, prom]) => (
+                        <li key={materia}>{materia}: {prom}</li>
+                      ))}
+                    </ul>
+                    <strong>Promedios por cuatrimestre:</strong>
+                    <ul>
+                      {Object.entries(promedios.porCuatrimestre).map(([clave, prom]) => (
+                        <li key={clave}>{clave}: {prom}</li>
+                      ))}
+                    </ul>
+                    <strong>Promedios por año:</strong>
+                    <ul>
+                      {Object.entries(promedios.porAnio).map(([clave, prom]) => (
+                        <li key={clave}>{clave}: {prom}</li>
+                      ))}
+                    </ul>
+                  </td>
+                </tr>
+              </React.Fragment>
             );
           })}
           {alumnos.length === 0 && (
             <tr>
-              <td colSpan="15" style={{ textAlign: "center" }}>
+              <td colSpan="9" style={{ textAlign: "center" }}>
                 No hay alumnos registrados.
               </td>
             </tr>
