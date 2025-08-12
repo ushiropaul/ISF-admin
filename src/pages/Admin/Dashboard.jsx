@@ -53,7 +53,7 @@ export default function Dashboard() {
     },
     {
       to: '/admin/boletines',
-      label: '📝 Notas',
+      label: '📝 Boletín',
       roles: ['admin', 'profesor', 'preceptor'],
     },
     {
