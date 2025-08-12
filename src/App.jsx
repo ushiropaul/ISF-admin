@@ -11,6 +11,8 @@ import UserAdministrator from './pages/UserAdministrator/UserAdministrator.jsx';
 import Nota from './pages/Admin/Notas.jsx';
 import Faltas from './pages/Admin/Faltas.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
+import Profesores from './pages/Admin/Profesores.jsx';
+import Boletines from './pages/Admin/boletines.jsx';
 
 function App() {
   return (
@@ -48,6 +50,25 @@ function App() {
         element={
             <ProtectedRoute rolesPermitidos={['admin', 'preceptor', 'secretario', 'profesor']}>
               <Faltas />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+        path="/admin/boletines"
+        element={
+            <ProtectedRoute rolesPermitidos={['admin', 'preceptor', 'secretario', 'profesor']}>
+              < Boletines/>
+            </ProtectedRoute>
+          }
+        />
+
+
+      <Route
+        path="/admin/profesores"
+        element={
+            <ProtectedRoute rolesPermitidos={['admin', 'preceptor', 'secretario', 'profesor']}>
+              < Profesores/>
             </ProtectedRoute>
           }
         />

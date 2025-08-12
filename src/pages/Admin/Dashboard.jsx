@@ -52,6 +52,11 @@ export default function Dashboard() {
       roles: ['admin', 'profesor', 'preceptor'],
     },
     {
+      to: '/admin/boletines',
+      label: '📝 Notas',
+      roles: ['admin', 'profesor', 'preceptor'],
+    },
+    {
       to: '/admin/faltas',
       label: '📅 Faltas',
       roles: ['admin', 'preceptor'],
