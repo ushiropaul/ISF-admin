@@ -37,11 +37,6 @@ export default function Dashboard() {
       roles: ['admin', 'preceptor', 'secretario'],
     },
     {
-      to: '/admin/cursos',
-      label: '📘 Cursos',
-      roles: ['admin', 'secretario'],
-    },
-    {
       to: '/admin/materias',
       label: '📚 Materias',
       roles: ['admin', 'secretario'],
