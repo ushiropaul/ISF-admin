@@ -169,13 +169,7 @@ export default function Boletines() {
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Documento</th>
-            <th>Fecha Nacimiento</th>
-            <th>Grupo Sanguíneo</th>
-            <th>Nacionalidad</th>
             <th>Edad</th>
-            <th>Celular</th>
-            <th>Localidad</th>
-            <th>Domicilio</th>
             <th>Curso</th>
             <th>Promedio General</th>
             <th>Faltas</th>
@@ -194,13 +188,7 @@ export default function Boletines() {
                 <td>{alumno.nombre}</td>
                 <td>{alumno.apellido}</td>
                 <td>{alumno.documento}</td>
-                <td>{alumno.fecha_nacimiento}</td>
-                <td>{alumno.grupo_sanguineo}</td>
-                <td>{alumno.nacionalidad}</td>
                 <td>{alumno.edad}</td>
-                <td>{alumno.num_cel}</td>
-                <td>{alumno.localidad}</td>
-                <td>{alumno.domicilio}</td>
                 <td>{alumno.cursos?.nombre || "Sin curso"}</td>
                 <td>{promedios.general}</td>
                 <td>{faltasAlumno}</td>
