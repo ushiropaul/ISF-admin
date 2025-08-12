@@ -10,9 +10,13 @@ import ResetPassword from './pages/ResetPassword/ResetPassword.jsx';
 import UserAdministrator from './pages/UserAdministrator/UserAdministrator.jsx';
 import Nota from './pages/Admin/Notas.jsx';
 import Faltas from './pages/Admin/Faltas.jsx';
+
 import ProtectedRoute from './components/ProtectedRoute';
+
 import Profesores from './pages/Admin/Profesores.jsx';
 import Boletines from './pages/Admin/boletines.jsx';
+
+
 
 function App() {
   return (
@@ -58,7 +62,7 @@ function App() {
         path="/admin/boletines"
         element={
             <ProtectedRoute rolesPermitidos={['admin', 'preceptor', 'secretario', 'profesor']}>
-              < Boletines/>
+              <Boletines/>
             </ProtectedRoute>
           }
         />
@@ -68,7 +72,7 @@ function App() {
         path="/admin/profesores"
         element={
             <ProtectedRoute rolesPermitidos={['admin', 'preceptor', 'secretario', 'profesor']}>
-              < Profesores/>
+              <Profesores/>
             </ProtectedRoute>
           }
         />
