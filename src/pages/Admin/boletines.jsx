@@ -2,7 +2,7 @@
 
 // src/pages/boletines.jsx
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient.js';
 import jsPDF from 'jspdf';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
 
