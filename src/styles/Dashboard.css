@@ -1,0 +1,61 @@
+/* Variables de colores */
+:root {
+  --color-base: #f8f5f0;        
+  --color-rojo: #8b0000;        
+  --color-verde: #006400;       
+  --color-dorado: #bfa14a;      
+  --color-texto: #333;
+  --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Estilo general del Dashboard */
+.dashboard {
+  background-color: var(--color-base);
+  min-height: 100vh;
+  padding: 3rem;
+  font-family: var(--font-primary);
+  color: var(--color-texto);
+}
+
+/* Título */
+.dashboard h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-dorado);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Menu de links */
+.dashboard-menu {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+}
+
+
+
+.dashboard-menu li a {
+  display: block;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  border: 2px solid var(--color-verde);
+  background-color: #fff;
+  color: var(--color-verde);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  min-width: 160px;
+  text-align: center;
+}
+
+.dashboard-menu li a:hover {
+  background-color: var(--color-verde);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}

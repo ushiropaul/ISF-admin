@@ -1,52 +1,124 @@
-.login-container {
+:root {
+  --color-base: #f8f5f0;        /* beige hueso */
+  --color-rojo: #8b0000;        
+  --color-verde: #006400;       
+  --color-dorado: #bfa14a;      
+  --color-texto: #333;
+  --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-base);
+  font-family: var(--font-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Formulario */
+form {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 3rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 6px 6px 20px rgba(0,0,0,0.08);
+  width: 100%;
   max-width: 400px;
-  margin: 5rem auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   text-align: center;
 }
 
-.login-container input {
-  display: block;
+/* Título */
+form h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-dorado);
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Inputs */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
   width: 100%;
-  margin: 0.5rem 0;
-  padding: 0.6rem;
-  font-size: 1rem;
+  box-sizing: border-box;
 }
 
-.login-container button {
-  padding: 0.6rem 1.5rem;
-  font-size: 1rem;
-  background-color: #003366;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+  border-color: var(--color-verde);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-.error {
-  color: red;
-  margin-top: 1rem;
-}
-
-
+/* Contenedor de contraseña con botón toggle */
 .password-container {
   position: relative;
-}
-
-.password-container input {
-  width: 100%;
-  padding-right: 40px; /* espacio para el botón */
+  display: flex;
+  align-items: center;
 }
 
 .toggle-password {
   position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 0.8rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--color-rojo);
+  transition: transform 0.2s ease;
+}
+
+.toggle-password:hover {
+  transform: scale(1.2);
+}
+
+/* Botón principal */
+form button[type="submit"] {
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  border: 2px solid var(--color-rojo);
+  background-color: var(--color-rojo);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+  background-color: #a00000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+/* Mensajes de error */
+form p {
+  font-size: 0.9rem;
+  color: red;
+}
+
+/* Link de recuperar contraseña */
+form p button {
+  color: var(--color-dorado);
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 18px;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+form p button:hover {
+  color: var(--color-verde);
 }

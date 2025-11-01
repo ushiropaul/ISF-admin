@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
+import './../../styles/Dashboard.css'
+
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);

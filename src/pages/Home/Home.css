@@ -1,0 +1,54 @@
+:root {
+  --color-base: #f8f5f0;        /* beige hueso */
+  --color-rojo: #8b0000;        
+  --color-verde: #006400;       
+  --color-dorado: #bfa14a;      
+  --color-texto: #333;
+  --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-base);
+  font-family: var(--font-primary);
+}
+
+/* Contenedor principal */
+.Div1 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* Título */
+.Div1 h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-dorado);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Botón/link */
+.Div1 a {
+  text-decoration: none;
+  color: var(--color-rojo);
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  border: 2px solid var(--color-rojo);
+  background-color: rgba(255,255,255,0.85);
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.Div1 a:hover {
+  background-color: var(--color-rojo);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 14px rgba(0,0,0,0.12);
+}

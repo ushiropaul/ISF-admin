@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
+import './../../styles/Alumnos.css'
+
 
 const Alumnos = () => {
   // Estados para alumnos, cursos y formulario
@@ -249,7 +251,7 @@ const obtenerCursos = async () => {
 
 
   return (
-    <div>
+    <div className='divprincipal'>
       <h2>Gestión de Alumnos</h2>
 
       <form onSubmit={modoEdicion ? actualizarAlumno : agregarAlumno}>
@@ -434,7 +436,8 @@ const obtenerCursos = async () => {
 
 
       <h3>Lista de Alumnos</h3>
-      <table border="1" cellPadding="5" style={{ borderCollapse: 'collapse' }}>
+      <div className='table-container'>
+        <table border="1" cellPadding="5" style={{ borderCollapse: 'collapse' }}>
         <thead>
           <tr>
             <th>Nombre</th>
@@ -480,6 +483,7 @@ const obtenerCursos = async () => {
           )}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };
