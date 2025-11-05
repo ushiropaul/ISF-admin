@@ -1,0 +1,115 @@
+/* ===== VARIABLES ===== */
+:root {
+  --color-base: #f8f5f0;
+  --color-rojo: #8b0000;
+  --color-verde: #006400;
+  --color-dorado: #bfa14a;
+  --color-texto: #333;
+  --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+div {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem 1rem;
+  font-family: var(--font-primary);
+  background-color: var(--color-base);
+  border-radius: 24px;
+  box-shadow: 6px 6px 14px rgba(0,0,0,0.08),
+              -6px -6px 14px rgba(255,255,255,0.6);
+  box-sizing: border-box;
+}
+
+/* ===== TITULO ===== */
+h2 {
+  text-align: center;
+  color: var(--color-dorado);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.08);
+  margin-bottom: 2rem;
+}
+
+/* ===== LABELS E INPUTS ===== */
+label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+input[type="date"],
+input[type="time"],
+select {
+  margin-top: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 16px;
+  border: none;
+  background-color: var(--color-base);
+  font-size: 1rem;
+  outline: none;
+  box-shadow: inset 4px 4px 8px rgba(0,0,0,0.05),
+              inset -4px -4px 8px rgba(255,255,255,0.6);
+  transition: all 0.3s ease;
+}
+
+/* Foco */
+input:focus,
+select:focus {
+  box-shadow: inset 2px 2px 6px rgba(0,0,0,0.1),
+              inset -2px -2px 6px rgba(255,255,255,0.6);
+}
+
+/* ===== BOTON ===== */
+button {
+  padding: 0.8rem 1rem;
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  background-color: var(--color-rojo);
+  color: #fff;
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.08),
+              -4px -4px 10px rgba(255,255,255,0.5);
+  transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 14px rgba(0,0,0,0.12),
+              -6px -6px 14px rgba(255,255,255,0.5);
+}
+
+button:disabled {
+  background-color: rgba(139,0,0,0.5);
+  cursor: not-allowed;
+}
+
+/* ===== MENSAJE ===== */
+p {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--color-rojo);
+}
+
+/* ===== MEDIA QUERIES ===== */
+@media (max-width: 480px) {
+  div {
+    padding: 1rem;
+  }
+
+  input[type="date"],
+  input[type="time"],
+  select,
+  button {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+}

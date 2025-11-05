@@ -69,7 +69,7 @@ input[type="text"]:focus {
 }
 
 .toggle-password {
-  position: absolute;
+  margin-left: .5rem;
   right: 0.8rem;
   background: none;
   border: none;

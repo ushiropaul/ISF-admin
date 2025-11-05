@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient.js';
+import './../../styles/Faltas.css'
 
 export default function Faltas() {
   const [cursos, setCursos] = useState([]);
